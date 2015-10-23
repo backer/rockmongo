@@ -363,6 +363,10 @@ class RQuery {
 	 */
 	function cursor() {
 		$cursor = $this->_collection->find($this->criteria(), $this->_results);
+                $cursor -> timeout(MServer::currentServer()->mongoTimeout());
+                if (method_exists($cursor,'maxTimeMS')) {
+                        $cursor -> maxTimeMS(MServer::currentServer()->mongoTimeout());
+                }
 		if ($this->_offset >= 0) {
 			$cursor->skip($this->_offset);
 		}
